@@ -15,6 +15,11 @@
             <p> Ciudad: {{ ciudad }} </p>
         
             <p>Hola, mi nombre es {{ nombre }}, tengo {{ edad }} años y vivo en {{ ciudad }}.</p>
+            
+            Contador: {{ contador }}
+            <button @click="contador++">Incrementar</button>
+            <button @click="contador--">Decrementar</button>
+
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -25,7 +30,8 @@
                 data: {
                     "nombre": "Ana Garcia",
                     "edad": 30,
-                    "ciudad": "tupungato"
+                    "ciudad": "tupungato",
+                    "contador": 0
                 }
             });
         </script>
