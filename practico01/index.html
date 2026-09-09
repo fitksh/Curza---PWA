@@ -62,7 +62,15 @@
     </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
+            const api = axios.create({
+                baseURL: 'https://jsonplaceholder.typicode.com'
+            });
+
+            
+            /*-----------------------------*-------------------------------*/
+
             const eventos = [];
 
             function registrarEvento(nombre) {
@@ -150,17 +158,39 @@
                         this.nuevaTarea = '';
 
                     },
-                    registrarEvento(nombre) {
+                    /*registrarEvento(nombre) {
                         this.listaEventos.push({
                             id: this.listaEventos.length + 1,
                             nombre: nombre,
                             timestamp: Date.now()
                         });
-                    },
+                    },*/
                     destruirApp() {
                         this.$destroy();
-                    }
+                    },
 
+                    async obtenerPost(postId) {
+                        try {
+                            const response = await api.get(`/posts/${postId}`);
+                            console.log('Post obtenido:', response.data);
+                            return response.data;
+                        } catch (error) {
+                            console.error('Error al obtener el post:', error);
+                        }
+                        
+                    },
+
+                    async obtenerComments(postId) {
+                        try {
+                            const response = await api.get(`/posts/${postId}/comments`);
+                            console.log('Comentarios obtenidos:', response.data);
+                            return response.data;
+                        } catch (error) {
+                            console.error('Error al obtener los comentarios:', error);
+                        }
+                        
+
+                    }
                 }
                 
             });
