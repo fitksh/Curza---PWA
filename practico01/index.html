@@ -49,7 +49,32 @@
         <br>
         <hr>
         <br>
- 
+        <h2>Lista de posts</h2>
+        <ul>
+            <li
+                v-for="post in posts"
+                :key="post.id"
+                @click="cargarComentarios(post.id)"
+                
+            >
+                <h3>{{ post.title }}</h3>
+                {{ post.body }}
+                <hr>
+            </li>
+        </ul>
+        <br>
+        <hr>
+        <br>
+        <h2>Comentarios</h2>
+        <ul>
+            <li v-for="comentario in comentarios" :key="comentario.id">
+                <strong>{{ comentario.name }}</strong>:
+                {{ comentario.body }}
+            </li>
+        </ul>
+        <br>
+        <hr>
+        <br>
     </div>
     <div id="eventosApp">
         <h2>Lista de eventos</h2>
@@ -104,7 +129,8 @@
                         texto: 'Tarea 3',
                         completada: false
                     }],
-                    "listaEventos": []
+                    "posts": [],
+                    "comentarios": []
                 },
                 beforeCreate() {
                     registrarEvento('beforeCreate');
@@ -120,6 +146,7 @@
 
                 mounted() {
                     registrarEvento('mounted');
+                    this.cargarPosts()
                 },
 
                 beforeUpdate() {
@@ -190,6 +217,20 @@
                         }
                         
 
+                    },
+                    async cargarPosts() {
+
+                        for (let i = 1; i <= 10; i++) {
+
+                            const post = await this.obtenerPost(i);
+
+                            this.posts.push(post);
+                        }
+
+                    },
+                    async cargarComentarios(postId) {
+                        const comentarios = await this.obtenerComments(postId);
+                        this.comentarios = comentarios;
                     }
                 }
                 
