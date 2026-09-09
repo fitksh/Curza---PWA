@@ -28,21 +28,52 @@
                 {{ tarea.texto }} - {{ tarea.completada ? 'Completada' : 'Pendiente' }}
             </li>
         </ul>
+        <br>
+        <hr>
+        <br>
         <p>Agregar nueva tarea:</p>
         <input type="text" v-model="nuevaTarea" placeholder="Nueva tarea">
         <button @click="agregarTarea">Agregar</button>
-    
+        <br>
+        <hr>
+        <br>
         <div>
             <p>Total de tareas: {{ totalTareas }}</p>
             <p>Tareas pendientes: {{ tareasPendientes }}</p>
         </div>
+        <br>
+        <hr>
+        <br>
+        <h2>Lista de eventos</h2>
+        <button @click="destruirApp">Destruir Vue</button>
+        <br>
+        <hr>
+        <br>
+ 
     </div>
+    <div id="eventosApp">
+        <h2>Lista de eventos</h2>
 
+        <ul>
+            <li v-for="evento in listaEventos" :key="evento.id">
+                {{ evento.nombre }} - {{ evento.timestamp }}
+            </li>
+        </ul>
+    </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <script>
-            
-            new Vue({
+            const eventos = [];
+
+            function registrarEvento(nombre) {
+                eventos.push({
+                    id: eventos.length + 1,
+                    nombre: nombre,
+                    timestamp: Date.now()
+                });
+            }
+
+            const app = new Vue({
                 el: '#app',
                 data: {
                     "nombre": "Ana Garcia",
@@ -64,7 +95,39 @@
                         id: 3,
                         texto: 'Tarea 3',
                         completada: false
-                    }]
+                    }],
+                    "listaEventos": []
+                },
+                beforeCreate() {
+                    registrarEvento('beforeCreate');
+                },
+
+                created() {
+                    registrarEvento('created');
+                },
+
+                beforeMount() {
+                    registrarEvento('beforeMount');
+                },
+
+                mounted() {
+                    registrarEvento('mounted');
+                },
+
+                beforeUpdate() {
+                    registrarEvento('beforeUpdate');
+                },
+
+                updated() {
+                    registrarEvento('updated');
+                },
+
+                beforeDestroy() {
+                    registrarEvento('beforeDestroy');
+                },
+
+                destroyed() {
+                    registrarEvento('destroyed');
                 },
 
                 computed: {
@@ -79,7 +142,6 @@
                 methods: {
 
                     agregarTarea() {
-                        // instrucciones
                         this.tareas.push({
                             id: this.tareas.length + 1,
                             texto: this.nuevaTarea,
@@ -87,10 +149,27 @@
                         });
                         this.nuevaTarea = '';
 
+                    },
+                    registrarEvento(nombre) {
+                        this.listaEventos.push({
+                            id: this.listaEventos.length + 1,
+                            nombre: nombre,
+                            timestamp: Date.now()
+                        });
+                    },
+                    destruirApp() {
+                        this.$destroy();
                     }
 
                 }
                 
+            });
+            
+            new Vue({
+                el: '#eventosApp',
+                data: {
+                    listaEventos: eventos
+                }
             });
         </script>
 
