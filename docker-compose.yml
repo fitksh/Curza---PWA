@@ -1,4 +1,5 @@
 services:
+
   db:
     image: postgres:16
     ports:
@@ -9,3 +10,29 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./backend/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  django:
+    container_name: django
+    image: pwa2026tp2:0.1.0
+
+    build:
+      context: .
+      dockerfile: config/django-image/Dockerfile
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./backend:/app
+
+    depends_on:
+      db:
+        condition: service_healthy

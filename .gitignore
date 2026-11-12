@@ -1,2 +1,9 @@
 .env
+
 /backend/postgres_data/
+/backend/db.sqlite3
+
+__pycache__/
+*.py[cod]
+
+.venv/
